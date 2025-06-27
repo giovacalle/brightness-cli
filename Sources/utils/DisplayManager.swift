@@ -139,9 +139,8 @@ struct Display: Codable, Identifiable {
               let service = findMatchingService(ioDisplayLocation: ioDisplayLocation) else {
             return true // Built-in displays are always supported
         }
-        
-        return !service.transportUpstream.contains("HDMI") &&
-               !service.transportDownstream.contains("HDMI")
+
+        return !service.transportUpstream.contains("HDMI")
     }
 }
 
