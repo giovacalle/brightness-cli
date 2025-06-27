@@ -1,0 +1,22 @@
+{
+  "configurations": [
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:brightness-cli}",
+      "name": "Debug brightness-cli",
+      "program": "${workspaceFolder:brightness-cli}/.build/debug/brightness-cli",
+      "preLaunchTask": "swift: Build Debug brightness-cli"
+    },
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:brightness-cli}",
+      "name": "Release brightness-cli",
+      "program": "${workspaceFolder:brightness-cli}/.build/release/brightness-cli",
+      "preLaunchTask": "swift: Build Release brightness-cli"
+    }
+  ]
+}
