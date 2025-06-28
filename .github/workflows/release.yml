@@ -1,0 +1,59 @@
+name: 🚀 Release brightness-cli
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+jobs:
+  build-and-release:
+    runs-on: macos-latest
+
+    steps:
+      # 1. Repository checkout
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+
+      # 3. Build in Release mode
+      - name: 🛠️ Build release binary
+        run: swift build --configuration release
+
+      # 4. Prepare artifacts
+      - name: 📂 Prepare release artifacts
+        run: |
+          mkdir -p release
+          cp .build/release/brightness-cli release/
+          echo "brightness-cli ${{ github.ref_name }}" > release/VERSION
+
+      # 5. Compress to ZIP
+      - name: 📦 Zip artifacts
+        run: |
+          cd release
+          zip -r brightness-cli-${{ github.ref_name }}.zip .
+
+      # 6. Create GitHub Release
+      - name: 🏷️ Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+
+      # 7. Upload ZIP file
+      - name: 📤 Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: release/brightness-cli-${{ github.ref_name }}.zip
+          asset_name: brightness-cli-${{ github.ref_name }}.zip
+          asset_content_type: application/zip

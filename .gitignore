@@ -1,6 +1,5 @@
 .DS_Store
 /.build/**
-!/.build/release/brightness-cli
 /Packages
 xcuserdata/
 DerivedData/
